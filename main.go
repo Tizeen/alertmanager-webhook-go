@@ -45,8 +45,12 @@ type RespBodyStruct struct {
 
 var (
 	logFile = "/var/log/alertwebhook.log"
-	sendKey = "xxxx-12ec757194444ca97236c686510a4126"
+	sendKey = "xxxx-92cf757194444ca97236c686510a4126"
 )
+
+func ping(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "pong\n")
+}
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	f, err := os.OpenFile(logFile, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
@@ -82,20 +86,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			alertMess.Alert[i].Annotations.Summary
 	}
 
-	title := "来告警信息了"
+	title := "来告警信息了~~~"
 
 	status, err := sendMessage(title, alertString)
 	if err != nil {
 		log.Printf(err.Error() + "\n")
 	}
 	if status == true {
-		log.Printf("告警信息推送成功\n")
+		log.Printf("告警信息推送成功~~~\n")
 	}
 
-}
-
-func ping(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "pong\n")
 }
 
 // 传入发送标题和内容，返回bool类型和err信息，为true表示发送成功，false表示发送失败
@@ -138,6 +138,5 @@ func sendMessage(title, message string) (status bool, err error) {
 func main() {
 	http.HandleFunc("/ping", ping)
 	http.HandleFunc("/alert", handler)
-	log.Printf("Start to listening the incoming requests on http address: %s", ":9999")
 	log.Fatal(http.ListenAndServe(":9999", nil))
 }
