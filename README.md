@@ -4,7 +4,7 @@
 
 感谢[Easy](https://github.com/easychen)提供这么好的服务。
 
-##　使用
+##使用
 
 1. 注册Pushbear，得到通道的sendKey；
 1. 填入`sendKey`变量中；
