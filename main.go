@@ -78,12 +78,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			alertMess.Alert[i].Labels.Instance + " " +
 			alertMess.Alert[i].Annotations.Summary,
 		)
-		alertString = alertString + "\n\n" + "**" + alertMess.Alert[i].Labels.AlertName + "**" + "\n\n" +
-			alertMess.Alert[i].Status + "\n\n" +
-			alertMess.Alert[i].Labels.Job + "\n\n" +
-			alertMess.Alert[i].Labels.Instance + "\n\n" +
-			alertMess.Alert[i].Annotations.Description + "\n\n" +
-			alertMess.Alert[i].Annotations.Summary
+		alertString = fmt.Sprintf("%s \n\n **%s** \n\n %s \n\n %s \n\n %s \n\n %s \n\n %s", alertString,
+			alertMess.Alert[i].Labels.AlertName,
+			alertMess.Alert[i].Status,
+			alertMess.Alert[i].Labels.Job,
+			alertMess.Alert[i].Labels.Instance,
+			alertMess.Alert[i].Annotations.Description,
+			alertMess.Alert[i].Annotations.Summary)
 	}
 
 	title := "来告警信息了~~~"
