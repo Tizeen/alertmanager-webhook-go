@@ -89,18 +89,16 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	title := "来告警信息了~~~"
 
-	status, err := sendMessage(title, alertString)
-	if err != nil {
+	if err := sendMessage(title, alertString); err != nil {
 		log.Printf(err.Error() + "\n")
-	}
-	if status == true {
+	} else {
 		log.Printf("告警信息推送成功~~~\n")
 	}
 
 }
 
 // 传入发送标题和内容，返回bool类型和err信息，为true表示发送成功，false表示发送失败
-func sendMessage(title, message string) (status bool, err error) {
+func sendMessage(title, message string) (err error) {
 
 	postUrl := "https://pushbear.ftqq.com/sub"
 
@@ -111,28 +109,28 @@ func sendMessage(title, message string) (status bool, err error) {
 
 	resp, err := http.PostForm(postUrl, parameters)
 	if err != nil {
-		return false, err
+		return err
 	}
 
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return false, err
+		return err
 	}
 
 	respBD := &RespBodyStruct{}
 
 	err = json.Unmarshal(body, respBD)
 	if err != nil {
-		return false, err
+		return err
 	}
 
 	if respBD.Code != 0 {
-		return false, errors.New(respBD.Message)
+		return errors.New(respBD.Message)
 	}
 
-	return true, nil
+	return nil
 
 }
 
