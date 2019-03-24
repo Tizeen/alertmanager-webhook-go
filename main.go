@@ -66,7 +66,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	err = decoder.Decode(&alertMess)
 	if err != nil {
-		panic(err)
+		log.Printf(err.Error())
 	}
 
 	var alertString string
